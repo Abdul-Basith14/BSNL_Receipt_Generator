@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Complete - Government Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .success-animation {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: inline-block;
+            stroke-width: 3;
+            stroke: #0f4c81;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #0f4c81;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            margin: 0 auto;
+        }
+        
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 3;
+            stroke-miterlimit: 10;
+            stroke: #0f4c81;
+            fill: none;
+            animation: stroke .6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards;
+        }
+        
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+        
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 50px #0f4c81;
+            }
+        }
+        
+        .success-message {
+            margin: 20px 0;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            border-left: 5px solid #0f4c81;
+        }
+        
+        .success-message h2 {
+            color: #0f4c81;
+            font-size: 1.6em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .success-message p {
+            color: #424242;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        
+        .download-section {
+            margin: 30px 0 20px 0;
+        }
+        
+        .btn-download {
+            width: 100%;
+            background: linear-gradient(135deg, #0f4c81 0%, #1565c0 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(15, 76, 129, 0.4);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(15, 76, 129, 0.6);
+            background: linear-gradient(135deg, #1565c0 0%, #0f4c81 100%);
+        }
+        
+        .btn-download:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            width: 100%;
+            background: white;
+            color: #0f4c81;
+            border: 2px solid #0f4c81;
+            padding: 15px 40px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-secondary:hover {
+            background: #0f4c81;
+            color: white;
+        }
+        
+        .info-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9933;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #ffe0b2;
+        }
+        
+        .info-box h3 {
+            color: #e65100;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-box p {
+            margin: 8px 0;
+            color: #424242;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .info-box strong {
+            color: #e65100;
+        }
+        
+        .official-notice {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="govt-emblem">⚖️</div>
+                <div class="header-text">
+                    <h1>GOVERNMENT OF INDIA</h1>
+                    <h2>Cash Receipts Generator</h2>
+                    <p class="subtitle">Official Document Management System</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="success-animation">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            
+            <div class="success-message">
+                <h2>✓ Processing Completed Successfully</h2>
+                <p>Cash receipts have been generated as per departmental standards and format specifications. The document is ready for download and official use.</p>
+            </div>
+
+            <div class="info-box">
+                <h3>📋 Document Information</h3>
+                <p><strong>File Format:</strong> Microsoft Excel (.xlsx)</p>
+                <p><strong>Content:</strong> Formatted cash receipts with proper cell merging, borders, and alignment</p>
+                <p><strong>Compliance:</strong> Generated as per departmental guidelines</p>
+                <p><strong>Status:</strong> Ready for official use and record maintenance</p>
+            </div>
+
+            <div class="download-section">
+                <a href="{{ url_for('download', filename=filename) }}" class="btn-download">
+                    <span style="font-size: 1.3em;">📥</span>
+                    Download Generated Receipts
+                </a>
+                
+                <a href="{{ url_for('index') }}" class="btn-secondary">
+                    <span>🔄</span>
+                    Process Another File
+                </a>
+            </div>
+            
+            <div class="official-notice">
+                <p>⚠️ This document is for official use only. Ensure proper authorization before distribution.</p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="govt-footer">
+                <div class="govt-seal">⚖️</div>
+                <p><strong>Government Department</strong></p>
+                <p>Official Government Portal | For Authorized Use</p>
+                <p style="margin-top: 10px; font-size: 0.9em;">© 2026 | Version 1.0 | For Official Use Only</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

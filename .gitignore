@@ -1,0 +1,13 @@
+*.pyc
+__pycache__/
+uploads/*
+!uploads/.gitkeep
+output/*
+!output/.gitkeep
+*.xlsx
+*.xls
+!Dec*.xlsx
+.env
+venv/
+.vscode/
+.DS_Store

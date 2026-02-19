@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Receipts - Government Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .preview-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 2px solid #0f4c81;
+        }
+        
+        .file-info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border-left: 5px solid #1565c0;
+        }
+        
+        .file-info h3 {
+            color: #0f4c81;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .info-item {
+            background: white;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #bbdefb;
+        }
+        
+        .info-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 1.1em;
+            color: #0f4c81;
+            font-weight: 600;
+        }
+        
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .preview-table thead {
+            background: linear-gradient(135deg, #0f4c81 0%, #1565c0 100%);
+            color: white;
+        }
+        
+        .preview-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9em;
+        }
+        
+        .preview-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #424242;
+        }
+        
+        .preview-table tbody tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .preview-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .preview-note {
+            background: #fff3e0;
+            border-left: 5px solid #ff9933;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .btn-download-preview {
+            flex: 1;
+            background: linear-gradient(135deg, #0f4c81 0%, #1565c0 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(15, 76, 129, 0.4);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-download-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(15, 76, 129, 0.6);
+            background: linear-gradient(135deg, #1565c0 0%, #0f4c81 100%);
+        }
+        
+        .btn-back {
+            flex: 0.4;
+            background: white;
+            color: #0f4c81;
+            border: 2px solid #0f4c81;
+            padding: 18px 40px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-back:hover {
+            background: #0f4c81;
+            color: white;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .badge-pits {
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+        
+        .badge-oh {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-back {
+                flex: 1;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-table {
+                font-size: 0.9em;
+            }
+            
+            .preview-table th,
+            .preview-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="govt-emblem">⚖️</div>
+                <div class="header-text">
+                    <h1>GOVERNMENT OF INDIA</h1>
+                    <h2>Cash Receipts Generator</h2>
+                    <p class="subtitle">Official Document Management System</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="preview-container">
+                <h2 style="color: #0f4c81; margin-bottom: 20px; text-align: center; font-size: 1.8em;">
+                    📄 Preview Generated Receipts
+                </h2>
+                
+                <div class="file-info">
+                    <h3>📋 Processing Summary</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Source File</div>
+                            <div class="info-value">{{ original_filename }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Total Receipts</div>
+                            <div class="info-value">{{ receipts_count }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Output File</div>
+                            <div class="info-value">{{ filename }}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Status</div>
+                            <div class="info-value" style="color: #4CAF50;">✓ Ready</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #0f4c81; margin: 25px 0 15px 0; font-size: 1.2em;">
+                    📋 Preview (All {{ receipts_count }} Receipts)
+                </h3>
+                
+                <div style="max-height: 600px; overflow-y: auto; border: 2px solid #0f4c81; border-radius: 8px; padding: 15px; background: white;">
+                    {% for receipt in preview_data %}
+                    <div class="receipt-preview" style="border: 2px solid #333; margin-bottom: 25px; padding: 20px; background: #fefefe; border-radius: 5px; page-break-inside: avoid;">
+                        <div style="text-align: center; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 15px;">
+                            <h3 style="margin: 0; font-size: 1.3em; color: #0f4c81;">GOVERNMENT OF INDIA</h3>
+                            <h4 style="margin: 5px 0; font-size: 1.1em; color: #d84315;">CASH RECEIPT</h4>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; padding: 10px; background: #f5f5f5; border: 1px solid #ddd;">
+                            <div><strong>Voucher No:</strong> {{ receipt.voucher_no }}</div>
+                            <div><strong>Date:</strong> {{ receipt.date }}</div>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px; padding: 15px; border: 1px solid #ddd; background: #f9f9f9;">
+                            <div style="margin-bottom: 8px;"><strong>Received from:</strong> {{ receipt.contractor }}</div>
+                            <div style="margin-bottom: 8px;"><strong>Work Type:</strong> 
+                                {% if 'PITS' in receipt.work_type %}
+                                <span class="badge badge-pits">{{ receipt.work_type }}</span>
+                                {% else %}
+                                <span class="badge badge-oh">{{ receipt.work_type }}</span>
+                                {% endif %}
+                            </div>
+                            <div style="margin-bottom: 8px;"><strong>Description:</strong></div>
+                            <div style="padding: 10px; background: white; border-left: 3px solid #0f4c81; margin-top: 5px; font-size: 0.95em; line-height: 1.6;">
+                                {{ receipt.description }}
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 15px; padding: 15px; border: 1px solid #ddd; background: #fff3e0;">
+                            <div>
+                                <strong>Amount in Words:</strong><br>
+                                <span style="color: #d84315; font-size: 1.05em;">Rupees {{ receipt.amount_words }} only</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <strong>Amount:</strong><br>
+                                <span style="font-size: 1.3em; color: #0f4c81; font-weight: bold;">₹{{ receipt.amount }}/-</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 12px; border: 1px solid #ddd; background: #f5f5f5; margin-bottom: 10px;">
+                            <div style="text-align: center; padding: 8px; border-right: 1px solid #ccc;">
+                                <small style="color: #666;">Signature of Payee</small>
+                            </div>
+                            <div style="text-align: center; padding: 8px; border-right: 1px solid #ccc;">
+                                <small style="color: #666;">Signature of Witness</small>
+                            </div>
+                            <div style="text-align: center; padding: 8px;">
+                                <small style="color: #666;">Authorized Signature</small>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 10px; border: 1px solid #ddd; background: #e3f2fd;">
+                            <div style="font-size: 0.85em; line-height: 1.8;">
+                                <div>✓ Labour Engaged is Justified</div>
+                                <div>✓ Work is done satisfactorily</div>
+                                <div>✓ Provision Exists in the estimate Maintenance Grant</div>
+                                <div style="margin-top: 8px; color: #0f4c81;"><strong>Passed and Paid for Rs. {{ receipt.amount }}/-</strong></div>
+                                <div style="color: #d84315;"><strong>(Rupees {{ receipt.amount_words|title }} only)</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if receipts_count > 0 %}
+                <div class="preview-note">
+                    ℹ️ Showing complete preview of all <strong>{{ receipts_count }} receipts</strong>. The downloadable Excel file contains the same content with full formatting, merged cells, and borders.
+                </div>
+                {% endif %}
+
+                <div class="action-buttons">
+                    <a href="{{ url_for('download', filename=filename) }}" class="btn-download-preview">
+                        <span style="font-size: 1.3em;">📥</span>
+                        Download Complete File
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn-back">
+                        <span>🏠</span>
+                        New Upload
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="govt-footer">
+                <div class="govt-seal">⚖️</div>
+                <p><strong>Government Department</strong></p>
+                <p>Official Government Portal | For Authorized Use</p>
+                <p style="margin-top: 10px; font-size: 0.9em;">© 2026 | Version 1.0 | For Official Use Only</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

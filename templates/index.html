@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Receipts Generator - Government Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="govt-emblem">⚖️</div>
+                <div class="header-text">
+                    <h1>GOVERNMENT OF INDIA</h1>
+                    <h2>Cash Receipts Generator</h2>
+                    <p class="subtitle">Official Document Management System</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="instructions">
+                <h2>System Instructions</h2>
+                <ul>
+                    <li>Upload Excel file containing maintenance work details (TY Adv Appl format)</li>
+                    <li>Required columns: Date, Route, Work Details, Pits/OH Cable, Amount Paid</li>
+                    <li>System will automatically generate formatted cash receipts</li>
+                    <li>Download generated file after processing completion</li>
+                </ul>
+            </div>
+
+            <form action="/generate" method="post" enctype="multipart/form-data" id="uploadForm">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" name="file" id="fileInput" accept=".xlsx,.xls" required>
+                    <label for="fileInput" class="upload-label">
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-text">
+                            <span class="main-text">Select Excel File to Upload</span>
+                            <span class="sub-text">Supported formats: .xlsx, .xls | Maximum size: 16MB</span>
+                            <span class="file-name" id="fileName"></span>
+                        </div>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-generate" id="generateBtn">
+                    <span class="btn-icon">⚙️</span>
+                    Process and Generate Receipts
+                </button>
+            </form>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="messages">
+                        {% for category, message in messages %}
+                            <div class="message message-{{ category }}">
+                                {% if category == 'error' %}⚠{% else %}✓{% endif %} {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <footer>
+            <div class="govt-footer">
+                <div class="govt-seal">⚖️</div>
+                <p><strong>Government Department</strong></p>
+                <p>Official Government Portal | For Authorized Use</p>
+                <p style="margin-top: 10px; font-size: 0.9em;">© 2026 | Version 1.0 | For Official Use Only</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
