@@ -294,7 +294,11 @@ def generate_receipts(input_file):
     
     # Process each entry
     for entry in ty_data:
-        pits_oh_lower = entry['pits_oh'].lower()
+        # Safely handle pits_oh field (might be int, None, or string)
+        pits_oh_value = entry.get('pits_oh', '')
+        if pits_oh_value is None:
+            pits_oh_value = ''
+        pits_oh_lower = str(pits_oh_value).lower()
         is_pits = 'pit' in pits_oh_lower
         
         # Ensure date is datetime object
@@ -450,7 +454,11 @@ def generate_receipts(input_file):
     voucher_no_preview = 1
     
     for i, entry in enumerate(ty_data):
-        pits_oh_lower = entry['pits_oh'].lower()
+        # Safely handle pits_oh field (might be int, None, or string)
+        pits_oh_value = entry.get('pits_oh', '')
+        if pits_oh_value is None:
+            pits_oh_value = ''
+        pits_oh_lower = str(pits_oh_value).lower()
         is_pits = 'pit' in pits_oh_lower
         work_type = "PITS Work" if is_pits else "OH Cable Work"
         
